@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
 
 function SigninPage() {
   const [email, setEmail] = useState("");
@@ -18,6 +18,12 @@ function SigninPage() {
 
     if (!res.error) router.push("/");
   };
+
+  const { status } = useSession();
+
+  useEffect(() => {
+    if (status === "authenticated") router.replace("/");
+  }, [status]);
 
   return (
     <div className="signin-form">
